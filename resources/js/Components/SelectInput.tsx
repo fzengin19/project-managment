@@ -19,6 +19,6 @@ export default forwardRef(function SelectInput(
                 className
             }
             ref={localRef}
-        ></select>
+        >    {children}</select>
     );
 });
