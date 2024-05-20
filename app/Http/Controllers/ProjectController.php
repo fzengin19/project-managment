@@ -21,6 +21,10 @@ class ProjectController extends Controller
         if(request('status')){
             $query->where('status', request('status'));
         }
+        if(request('sort_field') && request('sort_direction')){
+            $query->orderBy(request('sort_field'), request('sort_direction'));
+        }
+
         $projects = $query->paginate(10)->onEachSide(1);
         return inertia("Project/Index",[
             "projects" => ProjectResource::collection($projects),
