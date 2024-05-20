@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
+use App\Http\Resources\TaskResource;
 
 class ProjectController extends Controller
 {
@@ -15,20 +16,20 @@ class ProjectController extends Controller
     public function index()
     {
         $query = Project::query();
-        if(request('name')){
-            $query->where('name','like','%'.request('name').'%');
+        if (request('name')) {
+            $query->where('name', 'like', '%' . request('name') . '%');
         }
-        if(request('status')){
+        if (request('status')) {
             $query->where('status', request('status'));
         }
-        if(request('sort_field') && request('sort_direction')){
+        if (request('sort_field') && request('sort_direction')) {
             $query->orderBy(request('sort_field'), request('sort_direction'));
         }
 
         $projects = $query->paginate(10)->onEachSide(1);
-        return inertia("Project/Index",[
+        return inertia("Project/Index", [
             "projects" => ProjectResource::collection($projects),
-            "queryParams" => request()->query()?: null
+            "queryParams" => request()->query() ?: null
         ]);
     }
 
@@ -53,7 +54,23 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        //
+        $query = $project->tasks();
+        $sortField = request('sort_field','id');
+        $sortDirection = request('sort_direction','desc');
+        $query->orderBy($sortField,$sortDirection);
+        if (request('name')) {
+            $query->where('name', 'like', '%' . request('name') . '%');
+        }
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+
+        $tasks = $query->paginate(10)->onEachSide(1);
+        return inertia('Project/Show', [
+            'project' => new ProjectResource($project),
+            'tasks' => TaskResource::collection($tasks),
+            "queryParams" => request()->query() ?: null
+        ]);
     }
 
     /**
