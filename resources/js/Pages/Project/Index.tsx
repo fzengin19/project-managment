@@ -7,13 +7,18 @@ import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constans";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/16/solid";
 import { Head, Link, router } from "@inertiajs/react";
 
-export default function Index({ auth, projects, queryParams = null }: any) {
+export default function Index({
+  auth,
+  projects,
+  queryParams = null,
+  success,
+}: any) {
   queryParams = queryParams || {};
   const searchFieldChanged = (name: any, value: any) => {
     if (value) {
       queryParams[name] = value;
     } else {
-      delete queryParams[name];
+      queryParams[name] = null;
     }
     router.get(route("project.index"), queryParams);
   };
@@ -40,20 +45,33 @@ export default function Index({ auth, projects, queryParams = null }: any) {
     <AuthenticatedLayout
       user={auth.user}
       header={
-        <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-          Projects
-        </h2>
+        <div className="flex justify-between">
+          <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            Projects
+          </h2>
+          <Link
+            className="px-3 py-1 text-white transition-all bg-indigo-600 rounded shadow hover:bg-indigo-700"
+            href={route("project.create")}
+          >
+            Create new Project
+          </Link>
+        </div>
       }
     >
       <Head title="Projects" />
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          {success && (
+            <div className="px-4 py-2 mb-4 text-white rounded bg-emerald-500">
+              {success}
+            </div>
+          )}
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr className="text-nowrap">
+                    <tr className="text-nowrap">
                       <TableHeading
                         name="id"
                         sort_field={queryParams.sort_field}
@@ -152,10 +170,10 @@ export default function Index({ auth, projects, queryParams = null }: any) {
                           />
                         </td>
                         <td className="px-2 py-2 text-gray-200 text-nowrap hover:underline">
-                          <Link href={route('project.show', project.id)}>
-                          {project.name}
+                          <Link href={route("project.show", project.id)}>
+                            {project.name}
                           </Link>
-                          </td>
+                        </td>
                         <td className="items-center justify-center px-2 py-2 mx-auto">
                           <span
                             className={

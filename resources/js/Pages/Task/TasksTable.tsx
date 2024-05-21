@@ -6,16 +6,16 @@ import { router, Link } from "@inertiajs/react";
 import { TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constans";
 
 export default function TasksTable({ tasks, queryParams }: any) {
+  queryParams = queryParams || {};
   const searchFieldChanged = (name: any, value: any) => {
     if (value) {
       queryParams[name] = value;
     } else {
-      delete queryParams[name];
+      queryParams[name] = null;
     }
     router.get(window.location.href, queryParams, {
-      preserveState: true
+      preserveState: true,
     });
-
   };
 
   const onKeyPress = (name: any, e: any) => {
@@ -34,9 +34,8 @@ export default function TasksTable({ tasks, queryParams }: any) {
       queryParams.sort_direction = "asc";
     }
     router.get(window.location.href, queryParams, {
-      preserveState: true
+      preserveState: true,
     });
-
   };
 
   return (
