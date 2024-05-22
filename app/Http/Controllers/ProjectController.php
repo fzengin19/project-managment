@@ -32,7 +32,8 @@ class ProjectController extends Controller
         $projects = $query->paginate(10)->onEachSide(1);
         return inertia("Project/Index", [
             "projects" => ProjectResource::collection($projects),
-            "queryParams" => request()->query() ?: null
+            "queryParams" => request()->query() ?: null,
+            'success' => session('success')
         ]);
     }
 
@@ -105,6 +106,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $name = $project->name;
+        $project->delete();
+        return to_route('project.index')->with('success', "Project '{$name}' was deleted.");
     }
 }

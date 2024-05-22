@@ -4,7 +4,7 @@ import TableHeading from "@/Components/TableHeading";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PROJECT_STATUS_CLASS_MAP, PROJECT_STATUS_TEXT_MAP } from "@/constans";
-import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/16/solid";
+
 import { Head, Link, router } from "@inertiajs/react";
 
 export default function Index({
@@ -40,6 +40,14 @@ export default function Index({
     }
     router.get(route("project.index"), queryParams);
   };
+
+  const deleteProject = (project: any) => {
+    if (!window.confirm("Are you sure you want delete to tje project?")) {
+      return;
+    }
+    router.delete(route("project.destroy", project.id));
+  };
+  console.log("Success message:", success);
 
   return (
     <AuthenticatedLayout
@@ -198,12 +206,12 @@ export default function Index({
                           >
                             Edit
                           </Link>
-                          <Link
-                            href={route("project.destroy", project.id)}
+                          <button
+                            onClick={(e) => deleteProject(project)}
                             className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
                           >
                             Delete
-                          </Link>
+                          </button>
                         </td>
                       </tr>
                     ))}
