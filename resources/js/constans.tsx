@@ -41,3 +41,18 @@ export const TASK_PRIORITY_TEXT_MAP: StatusTextMap = {
   medium: "Medium",
   high: "High",
 };
+
+
+
+
+export const USER_STATUS_CLASS_MAP: StatusClassMap = {
+  pending: "bg-amber-500",
+  in_progress: "bg-blue-500",
+  completed: "bg-green-500",
+};
+
+export const USER_STATUS_TEXT_MAP: StatusTextMap = {
+  pending: "Pending",
+  in_progress: "In Progress",
+  completed: "Completed",
+};
