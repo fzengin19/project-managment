@@ -7,7 +7,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Create({ auth, user }:any) {
-  var user = user.data;
+
   const { data, setData, post, errors, reset } = useForm({
     name: user.name || "",
     email: user.email || "",
