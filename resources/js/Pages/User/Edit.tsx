@@ -6,9 +6,9 @@ import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
 
-export default function Create({ auth, user }:any) {
-
+export default function Create({ auth, user }: any) {
   const { data, setData, post, errors, reset } = useForm({
+    id: user.id || null,
     name: user.name || "",
     email: user.email || "",
     password: "",
@@ -16,9 +16,8 @@ export default function Create({ auth, user }:any) {
     _method: "PUT",
   });
 
-  const onSubmit = (e :any) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
-
     post(route("user.update", user.id));
   };
 
@@ -34,7 +33,6 @@ export default function Create({ auth, user }:any) {
       }
     >
       <Head title="Users" />
-
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
@@ -65,6 +63,7 @@ export default function Create({ auth, user }:any) {
                   type="text"
                   name="email"
                   value={data.email}
+                  autoComplete="nope"
                   className="block w-full mt-1"
                   onChange={(e) => setData("email", e.target.value)}
                 />
@@ -80,6 +79,7 @@ export default function Create({ auth, user }:any) {
                   type="password"
                   name="password"
                   value={data.password}
+                  autoComplete="nope"
                   className="block w-full mt-1"
                   onChange={(e) => setData("password", e.target.value)}
                 />
@@ -96,6 +96,7 @@ export default function Create({ auth, user }:any) {
                 <TextInput
                   id="user_password_confirmation"
                   type="password"
+                  autoComplete="off"
                   name="password_confirmation"
                   value={data.password_confirmation}
                   className="block w-full mt-1"
